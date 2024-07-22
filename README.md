@@ -12,7 +12,6 @@ The Online Sketchbook is a web-based application that allows users to sketch, sa
 - **Sketchbook Pages**: Multiple pages to sketch on, move drawings around, and organize artwork.
 - **User Interface**: Aesthetic and polished UI with improved functionality.
 - **Download Options**: Save your drawings and download them as needed.
-- **Dashboard**: View and manage all your drawings in one place.
 - i will frequently update 'features when there are new features are available.
 
 ## Installation
