@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Sketchbook</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        #tools {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        #tools button, #tools input {
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        #tools button {
+            background-color: #007BFF;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        #tools button:hover {
+            background-color: #0056b3;
+        }
+        #tools input[type="color"] {
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+        #tools input[type="range"] {
+            -webkit-appearance: none;
+            width: 150px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #tools input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #007BFF;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #pageContainer {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 8px solid #8B4513;
+            border-radius: 16px;
+            background: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            background-image: url('images/sketchbook_texture.jpg'); /* Add texture for realism */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        #canvasContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 2px solid #8B4513;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .page {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .page.active {
+            display: block;
+        }
+        .pageCanvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+        .nav-buttons, .page-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .nav-buttons button, .page-controls button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .nav-buttons button {
+            background-color: #007BFF;
+        }
+        .nav-buttons button:hover {
+            background-color: #0056b3;
+        }
+        .nav-buttons button:active {
+            background-color: #004494;
+        }
+        .page-controls button {
+            background-color: #FF6F61;
+        }
+        .page-controls button:hover {
+            background-color: #e55e4d;
+        }
+        .page-controls button:active {
+            background-color: #d44535;
+        }
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .toolbar button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .toolbar button:hover {
+            background-color: #218838;
+        }
+        .toolbar button:active {
+            background-color: #1e7e34;
+        }
+        .brushPreview {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .brushPreview div {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #000000;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="tools">
+        <div class="toolbar">
+            <button id="undo">Undo</button>
+            <button id="redo">Redo</button>
+            <button id="clearAll">Clear All Pages</button>
+        </div>
+        <button id="save">Save Page</button>
+        <button id="download">Download Page</button>
+        <input type="color" id="colorPicker" title="Choose Color" value="#000000">
+        <input type="range" id="brushSize" min="1" max="50" value="5" title="Brush Size">
+        <div class="brushPreview">
+            <div id="brushPreview" style="background: #000000;"></div>
+            <span>Brush Size: <span id="brushSizeValue">5</span></span>
+        </div>
+    </div>
+    <div id="pageContainer">
+        <div id="canvasContainer">
+            <!-- Pages will be added dynamically here -->
+        </div>
+    </div>
+    <div class="nav-buttons">
+        <button id="prevPage">Previous Page</button>
+        <button id="nextPage">Next Page</button>
+        <button id="addPage">Add Page</button>
+    </div>
+    <div class="page-controls">
+        <button id="clearPage">Clear Page</button>
+    </div>
+    <script src="sketchbook.js"></script>
+</body>
+</html>
+
