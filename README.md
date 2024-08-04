@@ -4,7 +4,7 @@
 
 The Online Sketchbook is a web-based application that allows users to sketch, save, and manage their digital drawings. It provides a user-friendly interface with various drawing tools, a sketchbook-like environment with pages, and options to download and organize artwork.
 
-**Currently available on PC. A mobile version will be released in August.**
+**Currently available on PC. A mobile version will be released soon!.**
 
 ## Features
 
